@@ -6,7 +6,7 @@ Created on Tue Sep 22 08:19:53 2020
 """
 
 import pandas as pd 
-dataset = pd.read_csv('adult.csv')
+dataset = pd.read_csv('adult.csv', encoding='utf8')
 feature_cols = dataset.iloc[:, 0:14].columns
 #Cria um array com todos os valores do dataset (sem as colunas)
 X = dataset[feature_cols].values
@@ -35,8 +35,8 @@ from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, random_state = 0)
 
 #A base de dados não está balanceada, tornando os dados tendenciosos, então deve balancea-la
-from imblearn.under_sampling import RandomUserSampler 
-rus = RandomUserSampler()
+from imblearn.under_sampling import RandomUnderSampler
+rus = RandomUnderSampler()
 X_train,y_train = rus.fit_sample(X_train,y_train)
 
 #Criando árvore de decisão
@@ -47,7 +47,15 @@ clf = clf.fit(X_train, y_train)
 
 #Transformando a base de dados em um contexto visível ao usuário
 from sklearn.tree import export_graphviz
-export_graphviz(clf,out_file="decision_tree.dot",feature_names=feature_cols,class_names=['<=50k','>=50k'], rounded=True, filled=True)
+export_graphviz(clf,out_file="decision_tree.dot",feature_names=feature_cols,class_names=['<=50k','>50k'], rounded=True, filled=True)
+
+import pydotplus
+import io
+dot_data = io.StringIO()
+graph = pydotplus.graph_from_dot_file('decision_tree.dot')
+print(graph)
+
+
 
 y_pred = clf.predict(X_test)
 from sklearn import metrics
