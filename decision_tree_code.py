@@ -6,8 +6,14 @@ Created on Tue Sep 22 08:19:53 2020
 """
 
 import pandas as pd 
-dataset = pd.read_csv('adult.csv', encoding='ascii')
+dataset = pd.read_csv('adult.csv',encoding='latin-1',engine='python')
 feature_cols = dataset.iloc[:, 0:14].columns
+
+import chardet
+with open('adult.csv', 'rb') as rawdata:
+    result = chardet.detect(rawdata.read(100000))
+print(result)
+
 #Cria um array com todos os valores do dataset (sem as colunas)
 X = dataset[feature_cols].values
 #Criar um array com todos os atributos do tipo numérico
@@ -52,6 +58,7 @@ from io import StringIO
 from sklearn.tree import export_graphviz
 export_graphviz(clf,out_file='decision_tree.dot',feature_names=feature_cols,class_names=['<=50k','>50k'], rounded=True, filled=True)
 graph = pydotplus.graph_from_dot_file('decision_tree.dot')
+
 
 from graphviz import render
 render('dot','png','decision_tree.dot',formatter='cairo',renderer='cairo',quiet=False)
