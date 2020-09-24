@@ -6,7 +6,7 @@ Created on Tue Sep 22 08:19:53 2020
 """
 
 import pandas as pd 
-dataset = pd.read_csv('adult.csv', encoding='ISO-8859-1')
+dataset = pd.read_csv('adult.csv', encoding='ascii')
 feature_cols = dataset.iloc[:, 0:14].columns
 #Cria um array com todos os valores do dataset (sem as colunas)
 X = dataset[feature_cols].values
