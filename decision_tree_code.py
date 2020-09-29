@@ -51,18 +51,6 @@ clf = DecisionTreeClassifier()
 #Treino de modelo
 clf = clf.fit(X_train, y_train)
 
-#Transformando a base de dados em um contexto visível ao usuário
-import pydotplus
-import pydot
-from io import StringIO
-from sklearn.tree import export_graphviz
-export_graphviz(clf,out_file='decision_tree.dot',feature_names=feature_cols,class_names=['<=50k','>50k'], rounded=True, filled=True)
-graph = pydotplus.graph_from_dot_file('decision_tree.dot')
-
-
-from graphviz import render
-render('dot','png','decision_tree.dot',formatter='cairo',renderer='cairo',quiet=False)
-
 y_pred = clf.predict(X_test)
 from sklearn import metrics
 
